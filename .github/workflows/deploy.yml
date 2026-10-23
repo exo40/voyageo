@@ -1,0 +1,73 @@
+name: Deploy to Vercel
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build
+      run: npm run build
+
+    - name: Deploy to Vercel
+      uses: vercel/vercel-deploy@v1
+      with:
+        token: ${{ secrets.VERCEL_TOKEN }}
+        project-name: voyageo
+        production: true
+        env: |
+          NODE_ENV=production
+          DB_DRIVER=mysql
+          DB_HOST=your_db_host
+          DB_PORT=3306
+          DB_USER=voyageo_app
+          DB_PASSWORD=voyageo_app_password
+          DB_NAME=voyageo
+          PAYMENT_MODE=fedapay
+          FEDAPAY_ENV=production
+          FEDAPAY_PUBLIC_KEY=your_production_public_key
+          FEDAPAY_SECRET_KEY=your_production_secret_key
+          SMTP_HOST=smtp-relay.brevo.com
+          SMTP_PORT=587
+          SMTP_USER=REMPLACER_PAR_UN_SECRET
+          SMTP_PASS=REMPLACER_PAR_UN_SECRET
+          MAIL_FROM="Voyagéo <voyageo.bj@gmail.com>"
+          APP_BASE_URL=https://voyageo.example.com
+          SESSION_SECRET=very_long_and_random_session_secret_for_production
+          REDIS_HOST=your_redis_host
+          REDIS_PORT=6379
+          REDIS_PASSWORD=your_redis_password
+          REDIS_DB=0
+          WHATSAPP_NUMBER=22960315810
+          WHATSAPP_DISPLAY="+229 60 31 58 10"
+          ANNULATION_HEURES=24
+          RESERVATION_ATTENTE_MINUTES=15
+          CLOTURE_RESERVATION_MINUTES=30
+          TIMEZONE_OFFSET=+01:00
+          SUBSCRIPTION_PRICE_FCFA=20000
+          SUBSCRIPTION_DURATION_DAYS=30
+          ENCRYPTION_KEY=very_long_encryption_key
+          EMAIL_VERIFICATION=true
+          CODE_VALIDITE_MINUTES=15
+          DEMO_DATA=false
+
+          # Ajoutez d'autres variables d'environnement si nécessaire
+
+          # Configuration Redis (si utilisé)
+          # REDIS_HOST=your_redis_host
+          # REDIS_PORT=6379
+          # REDIS_PASSWORD=your_redis_password
+          # REDIS_DB=0
